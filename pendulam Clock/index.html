@@ -1,0 +1,201 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Document</title>
+    <style type="text/css">
+      * {
+        margin: 0;
+        padding: 0;
+        box-sizing: border-box;
+      }
+      body {
+        height: 100vh;
+        width: 100%;
+        background: #111;
+      }
+      .container {
+        height: 80vh;
+        width: 90%;
+        position: absolute;
+        top: 50%;
+        left: 50%;
+        transform: translate(-50%, -50%);
+      }
+      .clock {
+        position: absolute;
+        left: 50%;
+        height: 200px;
+        width: 200px;
+        border-radius: 50%;
+        transform: translateX(-50%);
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        color: rgba(255, 255, 255, 0.9);
+        box-shadow: 5px 5px 8px rgba(0, 0, 0, 0.5),
+          0px 0px 8px rgba(0, 0, 0, 0.5), 0 0 15px rgba(0, 0, 0, 0.5),
+          0 0 20px rgba(0, 0, 0, 0.5),
+          inset 5px 5px 15px rgba(255, 255, 255, 0.1);
+        z-index: 15;
+      }
+      .clock:before {
+        content: "";
+        position: absolute;
+        height: 7px;
+        width: 7px;
+        border-radius: 50%;
+        background: #fff;
+        z-index: 10;
+      }
+      .clock i {
+        position: absolute;
+        transform-origin: bottom;
+        border-radius: 25rem;
+      }
+      .clock i:nth-child(1) {
+        top: 25%;
+        height: 50px;
+        width: 4px;
+        background: red;
+      }
+      .clock i:nth-child(2) {
+        top: 20%;
+        height: 60px;
+        width: 3px;
+        background: green;
+      }
+      .clock i:nth-child(3) {
+        top: 15%;
+        height: 70px;
+        width: 2px;
+        background: yellow;
+      }
+      .clock span {
+        position: absolute;
+        top: 0;
+        text-align: center;
+        inset: 12px;
+        transform: rotate(calc(30deg * var(--i)));
+      }
+
+      .clock span b {
+        position: relative;
+        color: #333;
+        text-align: center;
+        display: inline-block;
+        transform: rotate(calc(-30deg * var(--i)));
+        text-shadow: 5px 5px 8px rgba(0, 0, 0, 0.8);
+        z-index: 10;
+      }
+      .pendulam {
+        position: absolute;
+        top: 100.5%;
+        left: 50%;
+        height: 250px;
+        width: 3px;
+        z-index: -5;
+        border-radius: 25rem;
+        background: #111;
+        transform-origin: top;
+        transform: rotate(25deg);
+        box-shadow: 5px 5px 8px rgba(0, 0, 0, 0.5),
+          0px 0px 8px rgba(0, 0, 0, 0.5), 0 0 15px rgba(0, 0, 0, 0.5),
+          0 0 20px rgba(0, 0, 0, 0.5),
+          inset 5px 5px 15px rgba(255, 255, 255, 0.1);
+        animation: animate 1s linear alternate infinite;
+      }
+      .pendulam:before {
+        content: "";
+        position: absolute;
+        top: 85%;
+        left: -33px;
+        height: 70px;
+        width: 70px;
+        background: #111;
+        border-radius: 50%;
+        box-shadow: 5px 5px 8px rgba(0, 0, 0, 0.5),
+          0px 0px 8px rgba(0, 0, 0, 0.5), 0 0 15px rgba(0, 0, 0, 0.5),
+          0 0 20px rgba(0, 0, 0, 0.5), inset 5px 5px 5px rgba(255, 0, 0, 0.1),
+          inset 5px 5px 10px rgba(0, 255, 0, 0.1);
+      }
+      @keyframes animate {
+        0% {
+          transform: rotate(20deg);
+        }
+        100% {
+          transform: rotate(-20deg);
+        }
+      }
+    </style>
+  </head>
+  <body>
+    <div class="container">
+      <div class="clock">
+        <i class="hr"></i>
+        <i class="mn"></i>
+        <i class="sc"></i>
+        <span style="--i: 1"><b class="hr1" data-content="1">1</b></span>
+        <span style="--i: 2"><b class="hr2" data-content="2">2</b></span>
+        <span style="--i: 3"><b class="hr3" data-content="3">3</b></span>
+        <span style="--i: 4"><b class="hr4" data-content="4">4</b></span>
+        <span style="--i: 5"><b class="hr5" data-content="5">5</b></span>
+        <span style="--i: 6"><b class="hr6" data-content="6">6</b></span>
+        <span style="--i: 7"><b class="hr7" data-content="7">7</b></span>
+        <span style="--i: 8"><b class="hr8" data-content="8">8</b></span>
+        <span style="--i: 9"><b class="hr9" data-content="9">9</b></span>
+        <span style="--i: 10"><b class="hr10" data-content="10">10</b></span>
+        <span style="--i: 11"><b class="hr11" data-content="11">11</b></span>
+        <span style="--i: 12"><b class="hr12" data-content="12">12</b></span>
+        <div class="pendulam"></div>
+      </div>
+    </div>
+    <script>
+      const hour = document.querySelector(".hr");
+      const min = document.querySelector(".mn");
+      const sec = document.querySelector(".sc");
+      setInterval(() => {
+        let date = new Date();
+        let hr = date.getHours();
+        let mn = date.getMinutes();
+        let sc = date.getSeconds();
+        let hourInt;
+        let clrmin;
+        let minInt;
+        hour.style.transform = `rotate(${hr * 30 + (mn * 6) / 12}deg)`;
+        min.style.transform = `rotate(${mn * 6}deg)`;
+        sec.style.transform = `rotate(${sc * 6}deg)`;
+
+        //color the hour and minute
+        if (hr <= 12) {
+          hourInt = document.querySelector(`.hr${hr}`);
+          hourInt.style.color = "red";
+        } else if (hr > 12) {
+          hr = hr - 12;
+          hourInt = document.querySelector(`.hr${hr}`);
+          hourInt.style.color = "red";
+        } else {
+          hourInt.style.color = "#222";
+        }
+
+        if (mn % 5 == 0) {
+          clrmin = mn / 5;
+          if (clrmin !== hr) {
+            minInt = document.querySelector(`.hr${clrmin}`);
+            minInt.innerText = mn;
+            minInt.style.color = "green";
+          }
+        } else {
+          clrmin = Math.floor(mn / 5);
+          if (clrmin !== hr) {
+            minInt = document.querySelector(`.hr${clrmin}`);
+            minInt.innerText = clrmin;
+            minInt.style.color = "#333";
+          }
+        }
+      });
+    </script>
+  </body>
+</html>
