@@ -1,0 +1,350 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Clock-Weather-App</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+    <style type="text/css">
+        @import url('https://fonts.googleapis.com/css2?family=Roboto:wght@400;700&display=swap');
+      *, *::before, *::after{
+        margin: 0;
+        padding: 0;
+        box-sizing: border-box;
+      }
+      body{
+        height: 100vh;
+        width: 100%;
+        background: #222;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        overflow: hidden;
+        font-family: 'Roboto', sans-serif;
+      }
+      .container1{
+        width: 300px;
+        height:400px;
+      }
+      .clock{
+        position: absolute;
+        width: 300px;
+        height: 300px;
+        top: 2%;
+        border-radius: 50%;
+        box-shadow: 10px 10px 15px rgba(0,0,0,0.75), inset 8px 8px 10px rgba(0,0,0,0.30), inset -8px -8px 10px rgba(0,0,0,0.50);
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        color: white;
+      }
+      .clock::before{
+        content: '';
+        position: absolute;
+        height: 5px;
+        width: 5px;
+        border-radius: 50%;
+        border: 1px solid white;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        background: white;
+        opacity: 1;
+        z-index: 10;
+      }
+      .clock span{
+        position: absolute;
+        text-align: center;
+        top: 0;
+        inset: 15px;
+        transform: rotate(calc(30deg*var(--i)));
+      }
+      .clock span b{
+        font-size: 1rem;
+        opacity: 0.6;
+        display: inline-block;
+        transform: rotate(calc(-30deg*var(--i)));
+      }
+      .circle{
+        position: absolute;
+        height: 200px;
+        width: 200px;
+        border: 1px solid gray;
+        border-radius: 50%;
+        opacity: 0.5;
+        display: flex;
+        justify-content: center;
+        align-items: flex-start;
+      }
+      .circle2{
+        height: 180px;
+        width: 180px;
+        z-index: 2;
+      }
+      .circle3{
+        z-index: 3;
+        height: 160px;
+        width: 160px;
+      }
+      .circle i{
+        position: absolute;
+        height: 50%;
+        width: 4px;
+        background: var(--clr);
+        transform-origin: bottom;
+        transform: scale(0.5);
+      }
+      .circle:nth-child(1) i{
+        width: 2px;
+      transform: scale(0.7);
+      }
+      .circle:nth-child(2) i{
+      transform: scale(0.6);
+        width: 3px;
+      }
+      .circle::before{
+        content: '';
+        position: absolute;
+        top: -3px;
+        height: 5px;
+        width: 5px;
+        border-radius: 50%;
+        background: var(--clr);
+        box-shadow: 0 0 5px var(--clr),
+        0 0 10px var(--clr);
+      }
+      #currDate{
+        position: relative;
+        padding: 15px;
+        border-radius: 10px;
+        color: white;
+        font-size: 1rem;
+        font-family: 'Roboto', sans-serif;
+        letter-spacing: 0.8px;
+        word-spacing: 2px;
+        opacity: 0.7;
+        top: 50%;
+        box-shadow: 10px 10px 15px rgba(0,0,0,0.75), inset 8px 8px 10px rgba(0,0,0,0.30), inset -8px -8px 10px rgba(0,0,0,0.50);
+        display: block;
+        text-align: center;
+        white-space: nowrap;
+      }
+      /*weather card*/
+      #weather_Heading{
+        position: absolute;
+        top: 65%;
+        color: white;
+        opacity: 0.5;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        width: 95%;
+      }
+      #weather_Heading h3{
+        text-align: center;
+        width: 50%;
+        margin-left: 20%;
+      }
+
+     input{
+        background: none;
+        border: none;
+        outline: none;
+        color: white;
+        font-size: 1.2rem;
+        padding-left: 5px;
+        font-weight: 700;
+        max-width: 40%;
+      }
+      button i{
+        opacity: 0.7;
+      }
+      #weatherCard{
+        position: absolute;
+        display: flex;
+        gap: 10px;
+        justify-content: space-around;
+        top: 73%;
+        width: 80%;
+      }
+      #tempCard, #additionalCard{
+        min-width: 40%;
+        min-height: 150px;
+        height: auto;
+        border-radius: 10px;
+        color: white;
+        padding: 20px;
+        box-shadow: 10px 10px 15px rgba(0,0,0,0.75), inset 8px 8px 10px rgba(0,0,0,0.30), inset -8px -8px 10px rgba(0,0,0,0.50);
+      }
+      #tempCard{
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+        align-items: center;
+        font-size: 1.3rem;
+        font-weight: 700;
+        letter-spacing: 1px;
+        opacity: 0.8;
+        color: yellow;
+    }
+    #additionalCard{
+      display: flex;
+      align-items: center;
+      padding: 20px;
+      justify-content: space-around;
+      font-size: 0.5em;
+      overflow: hidden;
+    }
+      #additionalCard ul{
+        height: 100%;
+        display: flex;
+        flex-direction: column;
+        justify-content: space-between;
+        overflow: auto;
+      }
+      #additionalCard ul::-webkit-scrollbar {
+  display: none;
+}
+      #additionalCard ul li{
+        list-style-type: none;
+        opacity: 0.7;
+        font-size: 0.7rem;
+        white-space: nowrap;
+      }
+      #weatherLogo{
+        height: 45px;
+        width: 45px;
+        filter: invert(1);
+        padding-bottom: 10px;
+        opacity: 0.5;
+      }
+      h6{
+        position: absolute;
+        color: blue;
+        font-weight: 400;
+        bottom: 5%;
+        visibility: hidden;
+      }
+    </style>
+  </head>
+  <body>
+    
+    <div class="container1">
+        <div class="clock">
+            <div class="circle circle1" style="--clr:#65fe08" id="sc"><i></i></div>
+            <div class="circle circle2" style="--clr: #fff03a" id="mn"><i></i></div>
+            <div class="circle circle3" style="--clr: #ff0000" id="hr"><i></i></div>
+            <span style="--i:1"><b>1</b></span>
+            <span style="--i:2"><b>2</b></span>
+            <span style="--i:3"><b>3</b></span>
+            <span style="--i:4"><b>4</b></span>
+            <span style="--i:5"><b>5</b></span>
+            <span style="--i:6"><b>6</b></span>
+            <span style="--i:7"><b>7</b></span>
+            <span style="--i:8"><b>8</b></span>
+            <span style="--i:9"><b>9</b></span>
+            <span style="--i:10"><b>10</b></span>
+            <span style="--i:11"><b>11</b></span>
+            <span style="--i:12"><b>12</b></span>
+        </div>
+        <span id="currDate"></span>
+    </div>
+
+    <div id="weather_Heading">
+    <h3>Weather for 
+    <input type="text" id="cityName" placeholder="Kolkata">
+    </h3>
+    <button style="background:none; outline:none;border: none"><i class="fa fa-refresh" aria-hidden="true"></i></button>
+    </div>
+    
+    <div id="weatherCard">
+    <div id="tempCard">
+      <img src="./weatherLogo.svg" id="weatherLogo">
+      <div><span id="temp">32</span>℃</div>
+   </div>
+    <div id="additionalCard">
+      <ul>
+        <li id="condition">condition: NA</li>
+        <li id="precip_mm">precipitation: Na</li>
+        <li id="wind_dir">Wind direction: NA</li>
+        <li id="wind_kph">Wind speed: NA</li>
+        <li id="humidity">Humidity: NA</li>
+      </ul>
+    </div>
+    </div>
+    <h6 id="errMsg">Location not found</h6>
+    <script>
+      let hr= document.querySelector('#hr');
+      let mn= document.querySelector('#mn');
+      let sc= document.querySelector('#sc');
+      setInterval(()=>{
+        
+      let date = new Date();
+      let hh= date.getHours()*30;
+      let mm= date.getMinutes()*6;
+      let ss= date.getSeconds()*6;
+      hr.style.transform = `rotateZ(${hh+(mm/12)}deg)`;
+      mn.style.transform = `rotateZ(${mm}deg)`;
+      sc.style.transform = `rotateZ(${ss}deg)`;
+      })
+      //date
+      var currentDate = document.getElementById('currDate');
+        const fetchDate= new Date();
+        let dateFormate = {
+          weekday: 'long',
+          year: 'numeric',
+          month: 'long',
+          day: 'numeric'
+        };
+        currentDate.innerHTML = fetchDate.toLocaleString("en-GB",dateFormate);
+        
+        //weather api
+        const options = {
+	method: 'GET',
+	headers: {
+		'X-RapidAPI-Key': 'cef668c561msh9b1d23dfd74234bp1c53c7jsnc50377fdd0a6',
+		'X-RapidAPI-Host': 'weatherapi-com.p.rapidapi.com'
+	}
+};
+function getWeather(city){
+fetch('https://weatherapi-com.p.rapidapi.com/current.json?q='+ city, options)
+	.then(response => response.json())
+	.then((response) => {console.log(response);
+	  temp.innerHTML= response.current.temp_c;
+	  if(temp.innerHTML<=10){
+	    temp.style.color="aqua";
+	  }
+	  else if(temp.innerHTML>10 && temp.innerHTML<35){
+	    temp.style.color="yellow";
+	  }
+	  else{
+	    temp.style.color="orange";
+	    
+	  }
+	  condition.innerHTML= `Condition: &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; ${response.current.condition.text}`;
+	  precip_mm.innerHTML= `Precipitation:&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; ${response.current.precip_mm}`;
+	  wind_dir.innerHTML= `Wind direction: &nbsp;&nbsp;${response.current.wind_dir}`;
+	  wind_kph.innerHTML= `Wind speed:&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; ${response.current.wind_kph}&nbsp; km/h`;
+	  humidity.innerHTML= `Humidity: &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;${response.current.humidity}`
+	})
+	let errMsg= document.getElementById('errMsg');
+	
+}
+	//changePlace
+	let btn = document.querySelector('button');
+	btn.style="background:transparent; width:40px; height: 40px; color: #65fe08; border:none; position:absolute right: 25px"; 
+	btn.addEventListener('click', changePlace);
+	function changePlace(){
+	  let inputVal = document.getElementById('cityName').value;
+	 let city = inputVal;
+	  console.log(city);
+	  getWeather(city);
+	}
+	getWeather("kolkata");
+	
+    </script>
+  </body>
+</html>
+</body>
+</html>
