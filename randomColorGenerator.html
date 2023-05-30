@@ -1,0 +1,65 @@
+<html>
+  <head>
+    <title>Javascript</title>
+    <style type="text/css">
+      *{ padding: 0;
+      margin: 0;
+      box-sizing: border-box;
+      }
+      #main{
+        height: 100vh;
+        width: 100%;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        transition: 2s;
+      }
+      #container{
+        width: 20rem;
+        height: 7rem;
+        background-color: rgba(255,255,255,0.5);
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        flex-direction: column;
+        border: 1px solid white;
+        border-radius: 7px;
+      }
+      #colorCode{
+        /*border: 2px solid blue;*/
+        text-align: center;
+        margin-top: -10px;
+        font-size: 20px;
+      }
+      #btn{
+        width: 50%;
+        height: 2rem;
+        margin-top: 10px;
+        border-radius: 5px;
+        background-color: rgba(255,255,255,0.5);
+        border: none;
+      }
+    </style>
+  </head>
+  <body>
+    <div id="main">
+      <div id="container">
+        <h1 id="colorCode">#1gy64a</h1>
+        <button id="btn">Click Me</button>
+        
+      </div>
+    </div>
+    <script>
+      const hexColor=()=>{
+        const randNum= Math.floor(Math.random ()*16777215);
+        const hexCode= "#" + randNum.toString(16);
+        document.getElementById("colorCode").innerHTML= hexCode;
+        document.getElementById("main").style.backgroundColor= hexCode;
+       //to copy the hex code in clipboard
+        navigator.clipboard.writeText( hexCode);
+      }
+      document.getElementById("btn").addEventListener('click',hexColor)
+      hexColor();
+    </script>
+  </body>
+</html>
